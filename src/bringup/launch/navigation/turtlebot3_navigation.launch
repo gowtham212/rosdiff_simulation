@@ -1,0 +1,40 @@
+<launch>
+  <arg name="cmd_vel_topic" default="/cmd_vel" />
+  <arg name="odom_topic" default="odom" />
+  <arg name="move_forward_only" default="false"/>
+  <!-- Arguments -->
+  
+  <arg name="map_file" default="$(find my_robot_model)/maps/plazaworld.yaml"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="false"/>
+
+   <!-- Load the robot model into the parameter server -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find my_robot_model)/urdf/iabot_sim2.urdf'"/>
+  
+  <!-- Launch the gazebo world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find my_robot_model)/gazebo_worlds/plaza_world.world"/>
+  </include>
+
+  <!-- Load the robot model in the parameter server into the gazebo world -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model my_robo -param robot_description"/>
+
+  <!-- Joint State Publisher - Publishes Joint Positions -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+  <!-- Robot State Publisher  - Uses URDF and Joint States to compute Transforms -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!-- AMCL -->
+  <include file="$(find bringup)/launch/navigation/amcl.launch"/>
+
+  <!-- move_base -->
+  <include file="$(find bringup)/launch/navigation/move_base.launch">
+     <arg name="move_forward_only" value="$(arg move_forward_only)"/>
+  </include>
+
+ 
+</launch>

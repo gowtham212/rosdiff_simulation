@@ -1,0 +1,8 @@
+prefix=/home/gowtham/iabot_ws/devel/.private/my_robot_model
+
+Name: my_robot_model
+Description: Description of my_robot_model
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

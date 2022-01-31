@@ -1,0 +1,1 @@
+/home/gowtham/iabot_ws/devel/.private/bringup/lib/pkgconfig/bringup.pc

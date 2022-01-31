@@ -1,0 +1,6 @@
+devel_space: /home/gowtham/iabot_ws/devel
+install: false
+install_space: /home/gowtham/iabot_ws/install
+profile: default
+source_space: /home/gowtham/iabot_ws/src
+workspace: /home/gowtham/iabot_ws
